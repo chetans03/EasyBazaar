@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "272490638172",
+    "project_id": "fir-f813d",
+    "storage_bucket": "fir-f813d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272490638172:android:6c58f603b4878c9997ef99",
+        "android_client_info": {
+          "package_name": "com.example.ecom_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjJXRo6k-Y1HaPX3iG5d1cA9AJblvXcoQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
