@@ -71,7 +71,8 @@ flutter:
     - assets/images/
     - assets/images/categories/
     - assets/images/carousel_slideshow/
-    # - assets/images/offerNsponsered/
+    # - assets/images/headphonesDeals/
+    - assets/images/offersNsponcered/
     - assets/images/todays_deals/
   #   - images/a_dot_ham.jpeg
 
