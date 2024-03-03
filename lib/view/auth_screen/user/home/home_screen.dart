@@ -4,9 +4,15 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecom_clone/constants/common_functions.dart';
 import 'package:ecom_clone/constants/constant.dart';
+import 'package:ecom_clone/controller/provider/address_provider.dart';
+import 'package:ecom_clone/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
+import 'package:ecom_clone/model/address_model.dart';
 import 'package:ecom_clone/utils/colors.dart';
 import 'package:ecom_clone/utils/theme.dart';
+import 'package:ecom_clone/view/auth_screen/user/address_screen/address_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +23,99 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   CarouselController todaysDealsCarouselController = CarouselController();
+
+  checkUserAddress() async {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    bool userAddressPresent = await UserDataCRUD.checkUsersAddress();
+    if (userAddressPresent == false) {
+      // ignore: use_build_context_synchronously
+      showModalBottomSheet(
+          backgroundColor: transparent,
+          context: context,
+          builder: (context) {
+            return Container(
+              height: height * .3,
+              padding: EdgeInsets.symmetric(
+                  vertical: height * .04, horizontal: width * .02),
+              width: width,
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Add Address',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: height * .15,
+                      width: width * .4,
+                      child: ListView.builder(
+                          itemCount: 1,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: const AddressScreen(),
+                                        type: PageTransitionType.rightToLeft));
+                              },
+                              child: Container(
+                                width: width * .4,
+                                height: height * .15,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * .03,
+                                    vertical: height * .01),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: greyShade3),
+                                ),
+                                alignment: Alignment.center,
+                                child: Builder(builder: (context) {
+                                  if (index == 0) {
+                                    return Text(
+                                      "Add Address",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: greyShade3),
+                                    );
+                                  }
+                                  return Text(
+                                    "Add Address",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                  );
+                                }),
+                              ),
+                            );
+                          }),
+                    ),
+                  ]),
+            );
+          });
+      // print("user NOt found");
+    }
+  }
+
   headphoneDeal(int index) {
     switch (index) {
       case 0:
@@ -41,6 +140,16 @@ class _HomeScreenState extends State<HomeScreen> {
       case 3:
         return 'View all';
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkUserAddress();
+      context.read<AddressProvider>().getCurrentSelectedAddress();
+    });
   }
 
   @override
@@ -278,7 +387,7 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
                     todaysDealsCarouselController.animateToPage(index);
                   },
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: greyShade3),
@@ -405,11 +514,45 @@ class HomeScreenAddressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       height: height * .07,
       width: width,
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: addressBarGradientColor)),
+      child: Consumer<AddressProvider>(
+        builder: (context, addressProvider, child) {
+          if (addressProvider.fetchedCurrentSelectedAddress == true) {
+            AddressModel selectedAddress =
+                addressProvider.currentSelectedAddress;
+            return Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.location_on),
+                  CommonFunctions.blankSpace(0, width * .01),
+                  Text(
+                    'Deliver to ${selectedAddress.name} - ${selectedAddress.town} , ${selectedAddress.state}',
+                    style: textTheme.bodySmall!.copyWith(),
+                  ),
+                ],
+              ),
+            );
+          }
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(Icons.location_on),
+              CommonFunctions.blankSpace(0, width * .01),
+              Text(
+                'Deliver To User - City , State',
+                style: textTheme.bodySmall!.copyWith(),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
