@@ -1,6 +1,8 @@
 import 'package:ecom_clone/controller/services/auth_services/auth_services.dart';
+import 'package:ecom_clone/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
 
 import 'package:ecom_clone/view/auth_screen/auth_screens.dart';
+import 'package:ecom_clone/view/auth_screen/user/user_data_screen/user_data_input.dart';
 import 'package:ecom_clone/view/auth_screen/user/user_persistent_nav_bar/user_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -13,15 +15,27 @@ class SignInLogic extends StatefulWidget {
 }
 
 class _SignInLogicState extends State<SignInLogic> {
+  chechUser() async {
+    bool userAlreadyThere = await UserDataCRUD.checkUser();
+    if (userAlreadyThere) {
+      Navigator.push(
+        context,
+        PageTransition(
+            child: UserBottomNavBar(), type: PageTransitionType.rightToLeft),
+      );
+    } else {
+      Navigator.push(
+        context,
+        PageTransition(
+            child: UserDataInputScreen(), type: PageTransitionType.rightToLeft),
+      );
+    }
+  }
+
   checkAuthenticated() {
     bool userIsAuthenticated = AuthServices.checkAuthentication();
     userIsAuthenticated
-        ? Navigator.pushAndRemoveUntil(
-            context,
-            PageTransition(
-                child: const UserBottomNavBar(),
-                type: PageTransitionType.rightToLeft),
-            (route) => false)
+        ? chechUser()
         : Navigator.pushAndRemoveUntil(
             context,
             PageTransition(

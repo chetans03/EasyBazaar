@@ -1,5 +1,7 @@
-import 'package:ecom_clone/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../utils/colors.dart';
 
 class CommonFunctions {
   static blankSpace(double? height, double? width) {
@@ -11,9 +13,21 @@ class CommonFunctions {
 
   static divider() {
     return Divider(
-      color: grey,
-      thickness: 3,
+      color: greyShade3,
       height: 0,
+      thickness: 3,
+    );
+  }
+
+  static showToast({required BuildContext context, required String message}) {
+    return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 1,
+      backgroundColor: white,
+      textColor: black,
+      fontSize: 16,
     );
   }
 }
