@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "272490638172",
-    "project_id": "fir-f813d",
-    "storage_bucket": "fir-f813d.appspot.com"
+    "project_number": "801606329272",
+    "project_id": "easybazaar-4daa8",
+    "storage_bucket": "easybazaar-4daa8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:272490638172:android:6c58f603b4878c9997ef99",
+        "mobilesdk_app_id": "1:801606329272:android:742328f6fb4a1dd9bf654d",
         "android_client_info": {
           "package_name": "com.example.ecom_clone"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBjJXRo6k-Y1HaPX3iG5d1cA9AJblvXcoQ"
+          "current_key": "AIzaSyC66ttnd-ephS1BcU75KSPaOZS_5v1uh6g"
         }
       ],
       "services": {

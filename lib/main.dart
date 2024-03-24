@@ -1,10 +1,9 @@
 import 'package:ecom_clone/controller/provider/address_provider.dart';
 import 'package:ecom_clone/controller/provider/auth_provider/auth_provider.dart';
+import 'package:ecom_clone/controller/provider/product_provider/product_provider.dart';
 import 'package:ecom_clone/firebase_options.dart';
 import 'package:ecom_clone/utils/theme.dart';
 import 'package:ecom_clone/view/auth_screen/signinLogic.dart';
-import 'package:ecom_clone/view/auth_screen/user/address_screen/address_screen.dart';
-import 'package:ecom_clone/view/auth_screen/user/user_data_screen/user_data_input.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +28,9 @@ class Amazon extends StatelessWidget {
         ),
         ChangeNotifierProvider<AddressProvider>(
           create: (_) => AddressProvider(),
+        ),
+        ChangeNotifierProvider<SellerProductProvider>(
+          create: (_) => SellerProductProvider(),
         ),
       ],
       child: MaterialApp(

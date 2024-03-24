@@ -19,7 +19,7 @@ class UserDataCRUD {
           .set(userModel.toMap())
           .whenComplete(() {
         log('Data added');
-        CommonFunctions.showToast(
+        CommonFunctions.showSuccessToast(
             context: context, message: "User Added Successfully");
         Navigator.pushAndRemoveUntil(
             context,
@@ -30,7 +30,7 @@ class UserDataCRUD {
       });
     } catch (e) {
       log(e.toString());
-      CommonFunctions.showToast(context: context, message: e.toString());
+      CommonFunctions.showErrorToast(context: context, message: e.toString());
     }
   }
 
@@ -65,13 +65,13 @@ class UserDataCRUD {
           .set(addressModel.toMap())
           .whenComplete(() {
         log('Data added');
-        CommonFunctions.showToast(
+        CommonFunctions.showSuccessToast(
             context: context, message: "Address Added Successfully");
         Navigator.pop(context);
       });
     } catch (e) {
       log(e.toString());
-      CommonFunctions.showToast(context: context, message: e.toString());
+      CommonFunctions.showErrorToast(context: context, message: e.toString());
     }
   }
 
@@ -143,5 +143,24 @@ class UserDataCRUD {
       log(e.toString());
     }
     return defaultAddress;
+  }
+
+  static Future<bool> userIsSeller() async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection('users')
+          .doc(auth.currentUser!.phoneNumber)
+          .get();
+      if (snapshot.exists) {
+        UserModel userModel = UserModel.fromMap(snapshot.data()!);
+        log('User Type is: ${userModel.userType!}');
+        if (userModel.userType != 'user') {
+          return true;
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return false;
   }
 }

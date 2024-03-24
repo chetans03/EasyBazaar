@@ -532,25 +532,41 @@ class HomeScreenAddressBar extends StatelessWidget {
                 children: [
                   Icon(Icons.location_on),
                   CommonFunctions.blankSpace(0, width * .01),
-                  Text(
-                    'Deliver to ${selectedAddress.name} - ${selectedAddress.town} , ${selectedAddress.state}',
-                    style: textTheme.bodySmall!.copyWith(),
+                  Expanded(
+                    child: Text(
+                      'Deliver to ${selectedAddress.name} - ${selectedAddress.town} , ${selectedAddress.state}',
+                      style: textTheme.bodySmall!.copyWith(),
+                    ),
                   ),
                 ],
               ),
             );
           }
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Icon(Icons.location_on),
-              CommonFunctions.blankSpace(0, width * .01),
-              Text(
+          return Consumer<AddressProvider>(
+              builder: (context, addressProvider, child) {
+            if (addressProvider.fetchedCurrentSelectedAddress &&
+                addressProvider.addressPresent) {
+              AddressModel selectedAddress =
+                  addressProvider.currentSelectedAddress;
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.location_on),
+                  CommonFunctions.blankSpace(0, width * .01),
+                  Text(
+                    'Deliver To ${selectedAddress.name} - ${selectedAddress.town} , ${selectedAddress.state}',
+                    style: textTheme.bodySmall!.copyWith(),
+                  ),
+                  CommonFunctions.blankSpace(0, width * .02),
+                ],
+              );
+            } else {
+              return Text(
                 'Deliver To User - City , State',
                 style: textTheme.bodySmall!.copyWith(),
-              ),
-            ],
-          );
+              );
+            }
+          });
         },
       ),
     );

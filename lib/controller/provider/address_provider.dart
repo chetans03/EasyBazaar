@@ -1,22 +1,26 @@
 import 'package:ecom_clone/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
-import 'package:ecom_clone/model/address_model.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/address_model.dart';
+
 class AddressProvider extends ChangeNotifier {
-  List<AddressModel> allAddressModel = [];
+  List<AddressModel> allAdressModel = [];
   AddressModel currentSelectedAddress = AddressModel();
   bool fetchedCurrentSelectedAddress = false;
-  bool fetchAllAddress = false;
+  bool fetchedAllAddress = false;
+  bool addressPresent = false;
 
   getAllAddress() async {
-    allAddressModel = await UserDataCRUD.getAllAddress();
-    fetchAllAddress = true;
+    allAdressModel = await UserDataCRUD.getAllAddress();
+    fetchedAllAddress = true;
     notifyListeners();
   }
 
   getCurrentSelectedAddress() async {
     currentSelectedAddress = await UserDataCRUD.getCurrentSelectedAddress();
+    addressPresent = await UserDataCRUD.checkUsersAddress();
     fetchedCurrentSelectedAddress = true;
+
     notifyListeners();
   }
 }
