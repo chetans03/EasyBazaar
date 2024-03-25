@@ -5,11 +5,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecom_clone/constants/common_functions.dart';
 import 'package:ecom_clone/constants/constant.dart';
 import 'package:ecom_clone/controller/provider/address_provider.dart';
+import 'package:ecom_clone/controller/provider/deal_of_the_day_provider/deal_of_the_day_provider.dart';
 import 'package:ecom_clone/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
 import 'package:ecom_clone/model/address_model.dart';
+import 'package:ecom_clone/model/product_model.dart';
 import 'package:ecom_clone/utils/colors.dart';
 import 'package:ecom_clone/utils/theme.dart';
 import 'package:ecom_clone/view/auth_screen/user/address_screen/address_screen.dart';
+import 'package:ecom_clone/view/auth_screen/user/product_category_screen/product_category_screen.dart';
+import 'package:ecom_clone/view/auth_screen/user/product_screen/product_screen.dart';
+import 'package:ecom_clone/view/auth_screen/user/searched_product_screen/searched_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -149,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       checkUserAddress();
       context.read<AddressProvider>().getCurrentSelectedAddress();
+      context.read<DealOfTheDayProvider>().fetchTodaysDeal();
     });
   }
 
@@ -329,77 +335,110 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
                 color: black,
               ),
             ),
-            CarouselSlider(
-              carouselController: todaysDealsCarouselController,
-              options: CarouselOptions(
-                height: height * .23,
-                autoPlay: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                scrollDirection: Axis.horizontal,
-              ),
-              items: todaysDeals.map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              "assets/images/todays_deals/$i",
-                            ),
-                            fit: BoxFit.fitHeight),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-            CommonFunctions.blankSpace(height * .01, 0),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5), color: red),
+            Consumer<DealOfTheDayProvider>(
+                builder: (context, dealOfTheDayProvider, child) {
+              if (dealOfTheDayProvider.dealsFetched == false) {
+                return Container(
+                  height: height * .02,
+                  width: width,
+                  alignment: Alignment.center,
                   child: Text(
-                    "Upto 60% off",
-                    style: textTheme.bodyMedium!.copyWith(color: white),
-                  ),
-                ),
-                CommonFunctions.blankSpace(0, width * .03),
-                Text(
-                  "Deal of the day",
-                  style: textTheme.bodyMedium!.copyWith(color: red),
-                ),
-              ],
-            ),
-            CommonFunctions.blankSpace(height * .01, 0),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 20),
-              shrinkWrap: true,
-              itemCount: 4,
-              itemBuilder: ((context, index) {
-                return InkWell(
-                  onTap: () {
-                    todaysDealsCarouselController.animateToPage(index);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: greyShade3),
-                      image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/todays_deals/${todaysDeals[index]}"),
-                          fit: BoxFit.contain),
-                    ),
+                    "Loading Latest Deals",
+                    style: textTheme.bodySmall,
                   ),
                 );
-              }),
-            ),
+              } else {
+                return Column(children: [
+                  CarouselSlider(
+                    carouselController: todaysDealsCarouselController,
+                    options: CarouselOptions(
+                      height: height * .23,
+                      autoPlay: true,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                    items: dealOfTheDayProvider.deals.map((i) {
+                      ProductModel currentProduct = i;
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: ProductScreen(
+                                          productModel: currentProduct),
+                                      type: PageTransitionType.leftToRight));
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        currentProduct.imagesURL![0]),
+                                    fit: BoxFit.contain),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5), color: red),
+                        child: Text(
+                          "Upto 60% off",
+                          style: textTheme.bodyMedium!.copyWith(color: white),
+                        ),
+                      ),
+                      CommonFunctions.blankSpace(0, width * .03),
+                      Text(
+                        "Deal of the day",
+                        style: textTheme.bodyMedium!.copyWith(color: red),
+                      ),
+                    ],
+                  ),
+                  CommonFunctions.blankSpace(height * .01, 0),
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 20),
+                    shrinkWrap: true,
+                    itemCount: dealOfTheDayProvider.deals.length,
+                    itemBuilder: ((context, index) {
+                      ProductModel currentProduct =
+                          dealOfTheDayProvider.deals[index];
+                      return InkWell(
+                        onTap: () {
+                          todaysDealsCarouselController.animateToPage(index);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: greyShade3),
+                            image: DecorationImage(
+                                image:
+                                    NetworkImage(currentProduct.imagesURL![0]),
+                                fit: BoxFit.contain),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ]);
+              }
+            }),
+            CommonFunctions.blankSpace(height * .01, 0),
             TextButton(
               onPressed: () {},
               child: Text(
@@ -479,21 +518,31 @@ class HomeScreenCategoriesList extends StatelessWidget {
         itemCount: categories.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: width * .01),
-            child: Column(
-              children: [
-                Image(
-                  image: AssetImage(
-                    "assets/images/categories/${categories[index]}.png",
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  PageTransition(
+                      child: ProductCategoryScreen(
+                          productCategory: categories[index]),
+                      type: PageTransitionType.leftToRight));
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: width * .01),
+              child: Column(
+                children: [
+                  Image(
+                    image: AssetImage(
+                      "assets/images/categories/${categories[index]}.png",
+                    ),
+                    height: height * .07,
                   ),
-                  height: height * .07,
-                ),
-                Text(
-                  categories[index],
-                  style: textTheme.labelMedium,
-                ),
-              ],
+                  Text(
+                    categories[index],
+                    style: textTheme.labelMedium,
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -600,7 +649,14 @@ class HomePageAppBar extends StatelessWidget {
           SizedBox(
             width: width * .8,
             child: TextField(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                      child: SearchedProductScreen(),
+                      type: PageTransitionType.leftToRight),
+                );
+              },
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,

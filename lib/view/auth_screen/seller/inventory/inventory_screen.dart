@@ -144,7 +144,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                             CarouselSlider(
                               options: CarouselOptions(
                                 height: height * 0.2,
-                                autoPlay: false,
+                                autoPlay: true,
                                 viewportFraction: 1,
                               ),
                               items: currentModel.imagesURL!.map((i) {
@@ -186,7 +186,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                       Text(
                                         currentModel.description!,
                                         // textAlign: TextAlign.justify,
-                                        maxLines: 2,
+                                        maxLines: 1,
                                         style: textTheme.bodySmall!.copyWith(
                                             overflow: TextOverflow.ellipsis,
                                             color: grey),

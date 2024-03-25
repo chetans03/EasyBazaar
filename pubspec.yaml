@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^0.8.8
   firebase_storage: ^11.6.9
   motion_toast: ^2.8.0
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:
