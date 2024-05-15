@@ -1,10 +1,15 @@
 import 'package:ecom_clone/constants/common_functions.dart';
+import 'package:ecom_clone/controller/services/user_data_crud_services/user_data_CRUD_services.dart';
 import 'package:ecom_clone/controller/services/user_product_services/user_product_services.dart';
 import 'package:ecom_clone/model/product_model.dart';
 import 'package:ecom_clone/model/user_product_model.dart';
 import 'package:ecom_clone/utils/colors.dart';
+import 'package:ecom_clone/view/auth_screen/user/orders_screen/orders_screen.dart';
 import 'package:ecom_clone/view/auth_screen/user/product_screen/product_screen.dart';
+import 'package:ecom_clone/view/auth_screen/user/profile/your_account_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final width = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
+        backgroundColor: Color.fromARGB(255, 242, 228, 233),
         appBar: PreferredSize(
           preferredSize: Size(width, height * 0.1),
           child: Container(
@@ -38,11 +44,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Row(
               children: [
-                Image(
-                  image: const AssetImage(
-                    'assets/images/amazon_black_logo.png',
+                Text(
+                  "EasyBazzar",
+                  style: GoogleFonts.dancingScript(
+                    textStyle: TextStyle(
+                        color: white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
                   ),
-                  height: height * 0.04,
                 ),
                 const Spacer(),
                 IconButton(
@@ -296,7 +305,7 @@ class BuyAgain extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: width * 0.02),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: greyShade3,
+                          color: black,
                         ),
                         borderRadius: BorderRadius.circular(
                           10,
@@ -334,7 +343,7 @@ class UsersOrders extends StatelessWidget {
                 width: width,
                 alignment: Alignment.center,
                 child: Text(
-                  'Opps! You did not order anything yet',
+                  'Opps! Your didnt order anything yet',
                   style: textTheme.displayMedium,
                 ),
               );
@@ -490,15 +499,22 @@ class YouGridBtons extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            // if (index == 0) {
-            //   Navigator.push(
-            //     context,
-            //     PageTransition(
-            //       child: const OrdersScreen(),
-            //       type: PageTransitionType.rightToLeft,
-            //     ),
-            //   );
-            // }
+            if (index == 0) {
+              Navigator.push(
+                context,
+                PageTransition(
+                  child: const OrdersScreen(),
+                  type: PageTransitionType.rightToLeft,
+                ),
+              );
+            }
+            if (index == 2) {
+              Navigator.push(
+                context,
+                PageTransition(
+                    child: YourAccount(), type: PageTransitionType.leftToRight),
+              );
+            }
           },
           child: Container(
             decoration: BoxDecoration(
@@ -560,18 +576,26 @@ class UserGreetingsYouScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: width * 0.04),
       child: Row(
         children: [
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(text: 'Hello, ', style: textTheme.bodyLarge),
-                TextSpan(
-                  text: 'Sanjay',
-                  style: textTheme.bodyLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
+          FutureBuilder(
+            future: UserDataCRUD.getName(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(text: 'Hello, ', style: textTheme.bodyLarge),
+                      TextSpan(
+                        text: snapshot.data,
+                        style: textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
+                );
+              }
+              return Text("Please Login OR SignUp");
+            },
           ),
           const Spacer(),
           CircleAvatar(

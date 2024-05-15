@@ -201,29 +201,29 @@ class UsersProductService {
     return sellersProducts;
   }
 
-  // static Future addOrder({
-  //   required BuildContext context,
-  //   required UserProductModel productModel,
-  // }) async {
-  //   try {
-  //     Uuid uuid = Uuid();
-  //     await firestore
-  //         .collection('Orders')
-  //         .doc(auth.currentUser!.phoneNumber)
-  //         .collection('myOrders')
-  //         .doc(productModel.productID! + uuid.v1())
-  //         .set(productModel.toMap())
-  //         .whenComplete(() {
-  //       log('Data Added');
+  static Future addOrder({
+    required BuildContext context,
+    required UserProductModel productModel,
+  }) async {
+    try {
+      Uuid uuid = Uuid();
+      await firestore
+          .collection('Orders')
+          .doc(auth.currentUser!.phoneNumber)
+          .collection('myOrders')
+          .doc(productModel.productID! + uuid.v1())
+          .set(productModel.toMap())
+          .whenComplete(() {
+        log('Data Added');
 
-  //       CommonFunctions.showSuccessToast(
-  //           context: context, message: 'Product Ordered Successful');
-  //     });
-  //   } catch (e) {
-  //     log(e.toString());
-  //     CommonFunctions.showErrorToast(context: context, message: e.toString());
-  //   }
-  // }
+        CommonFunctions.showSuccessToast(
+            context: context, message: 'Product Ordered Successful');
+      });
+    } catch (e) {
+      log(e.toString());
+      CommonFunctions.showErrorToast(context: context, message: e.toString());
+    }
+  }
 
   static Stream<List<UserProductModel>> fetchOrders() => firestore
       .collection('Orders')
@@ -235,24 +235,24 @@ class UsersProductService {
             return UserProductModel.fromMap(doc.data());
           }).toList());
 
-  // static Future fetchCart() async {
-  //   List<UserProductModel> sellersProducts = [];
-  //   try {
-  //     final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
-  //         .collection('Cart')
-  //         .doc(auth.currentUser!.phoneNumber)
-  //         .collection('myCart')
-  //         .get();
-  //     snapshot.docs.forEach((element) {
-  //       sellersProducts.add(UserProductModel.fromMap(element.data()));
-  //     });
-  //     log(sellersProducts.toList().toString());
-  //   } catch (e) {
-  //     log('error Found');
-  //     log(e.toString());
-  //   }
-  //   log(sellersProducts.toList().toString());
-  //   log(sellersProducts.toList().toString());
-  //   return sellersProducts;
-  // }
+  static Future fetchCart() async {
+    List<UserProductModel> sellersProducts = [];
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection('Cart')
+          .doc(auth.currentUser!.phoneNumber)
+          .collection('myCart')
+          .get();
+      snapshot.docs.forEach((element) {
+        sellersProducts.add(UserProductModel.fromMap(element.data()));
+      });
+      log(sellersProducts.toList().toString());
+    } catch (e) {
+      log('error Found');
+      log(e.toString());
+    }
+    log(sellersProducts.toList().toString());
+    log(sellersProducts.toList().toString());
+    return sellersProducts;
+  }
 }

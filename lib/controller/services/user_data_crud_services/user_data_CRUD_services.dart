@@ -163,4 +163,57 @@ class UserDataCRUD {
     }
     return false;
   }
+
+  static Future<String> getName() async {
+    String name = " ";
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection("users")
+          .doc(auth.currentUser!.phoneNumber)
+          .get();
+
+      UserModel userModel = UserModel.fromMap(snapshot.data()!);
+      name = userModel.name!;
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return name;
+  }
+
+  static Future<String> mobileNum() async {
+    String mobileNum = " ";
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection("users")
+          .doc(auth.currentUser!.phoneNumber)
+          .get();
+
+      UserModel userModel = UserModel.fromMap(snapshot.data()!);
+      mobileNum = userModel.mobileNum!;
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return mobileNum;
+  }
+
+  static Future getAddress() async {
+    AddressModel addressModel = AddressModel();
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+          .collection("Address")
+          .doc(auth.currentUser!.phoneNumber)
+          .collection("address")
+          .get();
+
+      snapshot.docs.forEach((element) {
+        AddressModel currentAddress = AddressModel.fromMap(element.data());
+        addressModel = currentAddress;
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+    return addressModel;
+  }
 }

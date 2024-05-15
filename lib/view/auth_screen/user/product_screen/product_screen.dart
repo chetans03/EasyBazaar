@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecom_clone/constants/common_functions.dart';
+import 'package:ecom_clone/constants/constant.dart';
+import 'package:ecom_clone/controller/services/product_services/product_services.dart';
 import 'package:ecom_clone/controller/services/user_product_services/user_product_services.dart';
 import 'package:ecom_clone/model/product_model.dart';
 import 'package:ecom_clone/model/user_product_model.dart';
@@ -12,6 +14,7 @@ import 'package:ecom_clone/view/auth_screen/user/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -58,33 +61,33 @@ class _ProductScreenState extends State<ProductScreen> {
   //! RAZORPAY HANDLE EVENTS
   //!
 
-  // void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-  //   UserProductModel userProductModel = UserProductModel(
-  //     imagesURL: widget.productModel.imagesURL,
-  //     name: widget.productModel.name,
-  //     category: widget.productModel.category,
-  //     description: widget.productModel.description,
-  //     brandName: widget.productModel.brandName,
-  //     manufacturerName: widget.productModel.manufacturerName,
-  //     countryOfOrigin: widget.productModel.countryOfOrigin,
-  //     specifications: widget.productModel.specifications,
-  //     price: widget.productModel.price,
-  //     discountedPrice: widget.productModel.discountedPrice,
-  //     productID: widget.productModel.productID,
-  //     productSellerID: widget.productModel.productSellerID,
-  //     inStock: widget.productModel.inStock,
-  //     discountPercentage: widget.productModel.discountPercentage,
-  //     productCount: 1,
-  //     time: DateTime.now(),
-  //   );
-  //   await ProductServices.addSalesData(
-  //     context: context,
-  //     productModel: userProductModel,
-  //     userID: auth.currentUser!.phoneNumber!,
-  //   );
-  //   await UsersProductService.addOrder(
-  //       context: context, productModel: userProductModel);
-  // }
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    UserProductModel userProductModel = UserProductModel(
+      imagesURL: widget.productModel.imagesURL,
+      name: widget.productModel.name,
+      category: widget.productModel.category,
+      description: widget.productModel.description,
+      brandName: widget.productModel.brandName,
+      manufacturerName: widget.productModel.manufacturerName,
+      countryOfOrigin: widget.productModel.countryOfOrigin,
+      specifications: widget.productModel.specifications,
+      price: widget.productModel.price,
+      discountedPrice: widget.productModel.discountedPrice,
+      productID: widget.productModel.productID,
+      productSellerID: widget.productModel.productSellerID,
+      inStock: widget.productModel.inStock,
+      discountPercentage: widget.productModel.discountPercentage,
+      productCount: 1,
+      time: DateTime.now(),
+    );
+    await ProductServices.addSalesData(
+      context: context,
+      productModel: userProductModel,
+      userID: auth.currentUser!.phoneNumber!,
+    );
+    await UsersProductService.addOrder(
+        context: context, productModel: userProductModel);
+  }
 
   // void _handlePaymentError(PaymentFailureResponse response) {
   //   CommonFunctions.showErrorToast(
@@ -424,7 +427,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       context: context, productModel: model);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: amber,
+                  backgroundColor: buttonColor,
                   minimumSize: Size(
                     width,
                     height * 0.06,
@@ -447,7 +450,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: orange,
+                  backgroundColor: secondbuttonColor,
                   minimumSize: Size(
                     width,
                     height * 0.06,

@@ -16,6 +16,7 @@ import 'package:ecom_clone/view/auth_screen/user/product_category_screen/product
 import 'package:ecom_clone/view/auth_screen/user/product_screen/product_screen.dart';
 import 'package:ecom_clone/view/auth_screen/user/searched_product_screen/searched_product_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -165,8 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 242, 228, 233),
         appBar: PreferredSize(
-          preferredSize: Size(width * 1, height * .08),
+          preferredSize: Size(width * 1, height * .15),
           child: HomePageAppBar(width: width, height: height),
         ),
         body: SingleChildScrollView(
@@ -205,32 +207,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   productPicNameList: clothingDealsList,
                   offerFor: 'clothing'),
               CommonFunctions.divider(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonFunctions.blankSpace(height * .01, 0),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: width * .03),
-                    child: Text(
-                      "Watch Sixer only on mini TV",
-                      style: textTheme.displaySmall!.copyWith(
-                        color: black,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: width,
-                    height: height * .5,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: width * .03, vertical: height * .01),
-                    child: const Image(
-                      image: AssetImage(
-                          "assets/images/offersNsponcered/sixer.png"),
-                      fit: BoxFit.fill,
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),
@@ -331,8 +307,10 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
             CommonFunctions.blankSpace(0, height * .1),
             Text(
               "50%-80% off || Latest deals",
-              style: textTheme.displaySmall!.copyWith(
-                color: black,
+              style: GoogleFonts.poppins(
+                textStyle: textTheme.displaySmall!.copyWith(
+                  color: black,
+                ),
               ),
             ),
             Consumer<DealOfTheDayProvider>(
@@ -344,7 +322,9 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     "Loading Latest Deals",
-                    style: textTheme.bodySmall,
+                    style: GoogleFonts.poppins(
+                      textStyle: textTheme.bodySmall,
+                    ),
                   ),
                 );
               } else {
@@ -391,16 +371,23 @@ class TodaysDealHomeScreenWidget extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5), color: red),
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.pink),
                         child: Text(
                           "Upto 60% off",
-                          style: textTheme.bodyMedium!.copyWith(color: white),
+                          style: GoogleFonts.poppins(
+                            textStyle:
+                                textTheme.bodyMedium!.copyWith(color: white),
+                          ),
                         ),
                       ),
                       CommonFunctions.blankSpace(0, width * .03),
                       Text(
                         "Deal of the day",
-                        style: textTheme.bodyMedium!.copyWith(color: red),
+                        style: GoogleFonts.poppins(
+                          textStyle: textTheme.bodyMedium!
+                              .copyWith(color: Colors.pink),
+                        ),
                       ),
                     ],
                   ),
@@ -483,6 +470,7 @@ class HomeScreenBanner extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
                 image: DecorationImage(
                     image: AssetImage(
                       "assets/images/carousel_slideshow/$i",
@@ -528,18 +516,20 @@ class HomeScreenCategoriesList extends StatelessWidget {
                       type: PageTransitionType.leftToRight));
             },
             child: Container(
+              color: Color.fromARGB(255, 242, 228, 233),
               margin: EdgeInsets.symmetric(horizontal: width * .01),
               child: Column(
                 children: [
                   Image(
                     image: AssetImage(
-                      "assets/images/categories/${categories[index]}.png",
+                      "assets/images/categories/${categories[index]}.jpg",
                     ),
                     height: height * .07,
                   ),
                   Text(
                     categories[index],
-                    style: textTheme.labelMedium,
+                    style:
+                        GoogleFonts.poppins(textStyle: textTheme.labelMedium),
                   ),
                 ],
               ),
@@ -584,7 +574,8 @@ class HomeScreenAddressBar extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Deliver to ${selectedAddress.name} - ${selectedAddress.town} , ${selectedAddress.state}',
-                      style: textTheme.bodySmall!.copyWith(),
+                      style:
+                          GoogleFonts.poppins(textStyle: textTheme.bodySmall),
                     ),
                   ),
                 ],
@@ -635,47 +626,60 @@ class HomePageAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: width * .03, vertical: height * .01),
+      padding: EdgeInsets.symmetric(
+          horizontal: width * .03, vertical: height * .001),
       decoration: BoxDecoration(
         gradient: LinearGradient(
             colors: appBarGradientColor,
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            width: width * .8,
-            child: TextField(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                      child: SearchedProductScreen(),
-                      type: PageTransitionType.leftToRight),
-                );
-              },
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: grey,
-                ),
-                fillColor: white,
-                filled: true,
-                hintText: "Search",
-                contentPadding: EdgeInsets.symmetric(horizontal: width * .03),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: grey),
-                ),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "EasyBazzar",
+              style: GoogleFonts.dancingScript(
+                textStyle: TextStyle(
+                    color: white, fontSize: 40, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.mic))
-        ],
-      ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: width * .8,
+                  child: TextField(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                            child: SearchedProductScreen(),
+                            type: PageTransitionType.leftToRight),
+                      );
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: grey,
+                      ),
+                      fillColor: white,
+                      filled: true,
+                      hintText: "Search",
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: width * .03),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(color: grey),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.mic))
+              ],
+            ),
+          ]),
     );
   }
 }

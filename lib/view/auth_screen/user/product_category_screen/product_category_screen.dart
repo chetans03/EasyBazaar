@@ -647,7 +647,7 @@ class _ProductCategoryScreenState extends State<ProductCategoryScreen> {
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: amber,
+                                        backgroundColor: secondbuttonColor,
                                         minimumSize: Size(
                                           width,
                                           height * 0.05,

@@ -14,11 +14,8 @@ final picker = ImagePicker();
 // const String keyID = '<Razorpay Key ID>';
 
 List<String> categories = [
-  'Prime',
   'Electronics',
-  'Business',
   'Home',
-  'miniTV',
   'Mobiles',
   'Fashion',
   'Deals',
@@ -29,19 +26,17 @@ List<String> categories = [
   'Movies',
   'Books',
   'Appliances',
-  'More',
 ];
 
 List<String> carouselPictures = [
-  '1.png',
-  '2.png',
-  '3.png',
-  '4.png',
-  '5.png',
-  '6.png',
-  '7.png',
-  '8.png',
-  '9.png',
+  '1.jpg',
+  '2.jpg',
+  '3.jpg',
+  '4.jpg',
+  '5.jpg',
+  '6.jpg',
+  '7.jpg',
+  '8.jpg',
 ];
 
 List<String> todaysDeals = [

@@ -3,6 +3,7 @@ import 'package:ecom_clone/constants/common_functions.dart';
 import 'package:ecom_clone/controller/services/auth_services/auth_services.dart';
 import 'package:ecom_clone/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -22,14 +23,30 @@ class _AuthScreenState extends State<AuthScreen> {
     final width = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      backgroundColor: white,
-      appBar: AppBar(
-        elevation: 10,
-        backgroundColor: white,
-        centerTitle: true,
-        title: Image(
-          image: const AssetImage("assets/images/amazon_logo.png"),
-          height: height * .04,
+      backgroundColor: Color.fromARGB(255, 242, 228, 233),
+      appBar: PreferredSize(
+        preferredSize: Size(width, height * 0.1),
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(
+              left: width * 0.03,
+              right: width * 0.03,
+              bottom: height * 0.012,
+              top: height * 0.045),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: appBarGradientColor,
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+          child: Text(
+            "EasyBazzar",
+            style: GoogleFonts.dancingScript(
+              textStyle: TextStyle(
+                  color: white, fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -116,7 +133,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(
-                          text: 'New to Amazon ?', style: textTheme.bodyMedium)
+                          text: 'New to EasyBazaar ?',
+                          style: textTheme.bodyMedium)
                     ],
                   ),
                 )
@@ -249,7 +267,7 @@ class _AuthScreenState extends State<AuthScreen> {
             text: TextSpan(
               children: [
                 TextSpan(
-                    text: 'By Continuing you agree to Amazon\'s ',
+                    text: 'By Continuing you agree to EasyBazzar\'s ',
                     style: textTheme.labelMedium),
                 TextSpan(
                     text: 'Conditions of use ',
@@ -313,7 +331,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(
-                          text: 'New to Amazon', style: textTheme.bodyMedium)
+                          text: 'New to EasyBazzar',
+                          style: textTheme.bodyMedium)
                     ],
                   ),
                 )
@@ -418,7 +437,7 @@ class _AuthScreenState extends State<AuthScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: width * .03, vertical: height * .01),
             child: Text(
-              "By enrolling your mobile phone number , you concent to recieve automated security notification via text message from Amazon . \nMessage and date rates may apply",
+              "By enrolling your mobile phone number , you concent to recieve automated security notification via text message from EasyBazaar . \nMessage and date rates may apply",
               style: textTheme.bodyMedium,
             ),
           ),
@@ -432,7 +451,7 @@ class _AuthScreenState extends State<AuthScreen> {
             text: TextSpan(
               children: [
                 TextSpan(
-                    text: 'By Continuing you agree to Amazon\'s ',
+                    text: 'By Continuing you agree to EasyBazzar\'s ',
                     style: textTheme.labelMedium),
                 TextSpan(
                     text: 'Conditions of use ',
@@ -514,7 +533,8 @@ class CommonAuthButton extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          minimumSize: Size(width * 8, height * .06), backgroundColor: amber),
+          minimumSize: Size(width * 8, height * .06),
+          backgroundColor: secondbuttonColor),
       onPressed: onpressed,
       child: Text(
         "Continue",
@@ -563,7 +583,7 @@ class BottomAuthScreenWidget extends StatelessWidget {
         CommonFunctions.blankSpace(height * .01, 0),
         Center(
           child: Text(
-            "1996-23 , Amazon.com , Inc. or its affilates",
+            "1996-23 , EasyBazzar.com , Inc. or its affilates",
             style: textTheme.labelMedium!.copyWith(
               color: grey,
             ),

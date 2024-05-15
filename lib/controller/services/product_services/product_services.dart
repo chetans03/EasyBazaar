@@ -7,6 +7,7 @@ import 'package:ecom_clone/constants/common_functions.dart';
 import 'package:ecom_clone/constants/constant.dart';
 import 'package:ecom_clone/controller/provider/product_provider/product_provider.dart';
 import 'package:ecom_clone/model/product_model.dart';
+import 'package:ecom_clone/model/user_product_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +92,7 @@ class ProductServices {
         sellersProducts.add(ProductModel.fromMap(element.data()));
       });
 
-      log(sellersProducts.toList().toString());
+      log("after");
     } catch (e) {
       log('error Found');
       log(e.toString());
@@ -100,40 +101,39 @@ class ProductServices {
     return sellersProducts;
   }
 
-  // static Future addSalesData({
-  //   required BuildContext context,
-  //   required UserProductModel productModel,
-  //   required String userID,
-  // }) async {
-  //   try {
-  //     Uuid uuid = const Uuid();
-  //     await firestore
-  //         .collection('productSaleData')
-  //         .doc(productModel.productID)
-  //         .collection('purchase_history')
-  //         .doc(userID + uuid.v1())
-  //         .set(productModel.toMap())
-  //         .whenComplete(() {
-  //       log('Data Added');
+  static Future addSalesData({
+    required BuildContext context,
+    required UserProductModel productModel,
+    required String userID,
+  }) async {
+    try {
+      Uuid uuid = const Uuid();
+      await firestore
+          .collection('productSaleData')
+          .doc(productModel.productID)
+          .collection('purchase_history')
+          .doc(userID + uuid.v1())
+          .set(productModel.toMap())
+          .whenComplete(() {
+        log('Data Added');
 
-  //       // CommonFunctions.showSuccessToast(
-  //       //     context: context, message: 'Product Added Successful');
-  //     });
-  //   } catch (e) {
-  //     log(e.toString());
-  //     CommonFunctions.showErrorToast(context: context, message: e.toString());
-  //   }
-  // }
+        // CommonFunctions.showSuccessToast(
+        //     context: context, message: 'Product Added Successful');
+      });
+    } catch (e) {
+      log(e.toString());
+      CommonFunctions.showErrorToast(context: context, message: e.toString());
+    }
+  }
 
-  // static Stream<List<UserProductModel>> fetchSalesPerProduct(
-  //         {required String productID}) =>
-  //     firestore
-  //         .collection('productSaleData')
-  //         .doc(productID)
-  //         .collection('purchase_history')
-
-  //         .snapshots()
-  //         .map((snapshot) => snapshot.docs.map((doc) {
-  //               return UserProductModel.fromMap(doc.data());
-  //             }).toList());
+  static Stream<List<UserProductModel>> fetchSalesPerProduct(
+          {required String productID}) =>
+      firestore
+          .collection('productSaleData')
+          .doc(productID)
+          .collection('purchase_history')
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map((doc) {
+                return UserProductModel.fromMap(doc.data());
+              }).toList());
 }

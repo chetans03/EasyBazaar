@@ -19,7 +19,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size(width * 1, height * .08),
+          preferredSize: Size(width * 1, height * .15),
           child: HomePageAppBar(width: width, height: height),
         ),
         body: Container(
